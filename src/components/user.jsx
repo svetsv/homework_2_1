@@ -19,7 +19,7 @@ const User = ({
             <td>{name}</td>
             <td>
                 {qualities.map((item) => (
-                    <Qualitie key={_id} {...item} />
+                    <Qualitie key={item._id} {...item} />
                 ))}
             </td>
             <td>{profession.name}</td>
@@ -27,6 +27,7 @@ const User = ({
             <td>{rate}/5</td>
             <td>
                 <Bookmark
+                    key={"book_" + _id}
                     status={bookmark}
                     idUser={_id}
                     onToggleBookmark={onToggleBookmark}

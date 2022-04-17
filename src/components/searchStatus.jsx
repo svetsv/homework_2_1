@@ -1,26 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 const SearchStatus = ({ length }) => {
-    let classesH1 = "badge m-2 ";
-    let context;
-    const lastOne = Number(length.toString().slice(-1));
-    classesH1 += length === 0 ? "bg-danger" : "bg-primary";
-    switch (lastOne) {
-    case 2:
-    case 3:
-    case 4:
-        context = `${length} человека тусанет с тобой сегодня`;
-        break;
-    case 0:
-        context = "Никто с тобой не тусанет";
-        break;
-    default:
-        context = `${length} человек тусанет с тобой сегодня`;
-    }
-    return <span className={classesH1}>{context}</span>;
+    const renderPhrase = (number) => {
+        const lastOne = Number(number.toString().slice(-1));
+        if (number > 4 && number < 15) {
+            return "человек тусанет";
+        }
+        if (lastOne === 1) return "человек тусанет";
+        if ([2, 3, 4].indexOf(lastOne) >= 0) return "человека тусанут";
+        return "человек тусанет";
+    };
+    return (
+        <h2>
+            <span
+                className={"badge " + (length > 0 ? "bg-primary" : "bg-danger")}
+            >
+                {length > 0
+                    ? `${length + " " + renderPhrase(length)}   с тобой сегодня`
+                    : "Никто с тобой не тусанет"}
+            </span>
+        </h2>
+    );
 };
 SearchStatus.propTypes = {
-    length: PropTypes.number.isRequired
+    length: PropTypes.number
 };
+
 export default SearchStatus;
