@@ -11,7 +11,6 @@ const GroupList = ({
     if (!Array.isArray(items)) {
         const tmp = Object.values(items);
         items = tmp;
-        console.log(items);
     }
     return (
         <ul className="list-group">
