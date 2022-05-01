@@ -52,6 +52,7 @@ const Users = () => {
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
+
     /* eslint-disable */
     if (users) {
         const filterUsers = selectedProf
