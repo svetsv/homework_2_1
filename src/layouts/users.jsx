@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { paginate } from "../utils/paginate";
 import api from "../api";
-import Pagination from "./pagination";
-import GroupList from "./groupList";
-import SearchStatus from "./searchStatus";
-import UserTable from "./userTable";
+import Pagination from "../components/pagination";
+import GroupList from "../components/groupList";
+import SearchStatus from "../components/searchStatus";
+import UserTable from "../components/userTable";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
@@ -14,6 +14,7 @@ const Users = () => {
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
+    const [dataSearchUser, setDataSearchUser] = useState("");
     const pageSize = 8;
 
     useEffect(() => {
@@ -28,12 +29,15 @@ const Users = () => {
         setCurrentPage(1);
     }, [selectedProf]);
 
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [dataSearchUser]);
+
     const handleDelete = (userId) => {
         setUsers((prevState) =>
             prevState.filter((user) => user._id !== userId)
         );
     };
-
     const handleToggleBookmark = (id) => {
         const usersCopy = [...users];
         const index = usersCopy.findIndex((it) => it._id === id);
@@ -52,7 +56,9 @@ const Users = () => {
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
-
+    const handleSearchUser = ({ target }) => {
+        setDataSearchUser(() => target.value.toLowerCase());
+    };
     /* eslint-disable */
     if (users) {
         const filterUsers = selectedProf
@@ -63,14 +69,19 @@ const Users = () => {
               )
             : users;
 
-        const count = filterUsers.length;
+        const filterUsersSearch = dataSearchUser
+            ? filterUsers.filter((user) =>
+                  user.name.toLowerCase().includes(dataSearchUser)
+              )
+            : filterUsers;
+
+        const count = filterUsersSearch.length;
         const sortedUsers = _.orderBy(
-            filterUsers,
+            filterUsersSearch,
             [sortBy.path],
             [sortBy.order]
         );
         const userCrop = paginate(sortedUsers, currentPage, pageSize);
-
         const clearFilter = () => {
             setSelectedProf();
         };
@@ -93,6 +104,17 @@ const Users = () => {
                 )}
                 <div className="d-flex flex-column">
                     <SearchStatus length={count} />
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="searchUser"
+                            placeholder="search...."
+                            value={dataSearchUser}
+                            onChange={handleSearchUser}
+                        />
+                    </div>
+
                     {count > 0 && (
                         <UserTable
                             users={userCrop}

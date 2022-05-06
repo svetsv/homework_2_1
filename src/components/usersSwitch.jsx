@@ -1,6 +1,6 @@
 import React from "react";
 import UserPage from "./userPage";
-import Users from "./users";
+import Users from "../layouts/users";
 import { useParams } from "react-router-dom";
 
 const UsersSwitch = () => {
