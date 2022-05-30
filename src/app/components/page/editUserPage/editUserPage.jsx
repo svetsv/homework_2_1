@@ -7,6 +7,7 @@ import MultiSelectField from "../../common/form/multiSelectField";
 import { validator } from "../../../utils/validator";
 import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
+import BackHistoryButton from "../../common/backButton";
 
 const EditUserPage = ({ userId }) => {
     const [user, setUser] = useState();
@@ -120,9 +121,9 @@ const EditUserPage = ({ userId }) => {
         });
     };
     if (user && qualitiesUser.length !== 0) {
-        console.log(user.profession.name);
         return (
             <div className="container mt-5">
+                <BackHistoryButton />
                 <div className="row">
                     <div className="col-md-6 offset-md-3 shadow p-4">
                         <form>

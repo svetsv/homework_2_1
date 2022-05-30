@@ -1,32 +1,29 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import api from "../../../api";
-import Qualities from "../../ui/qualities";
-import { useHistory } from "react-router-dom";
+import UserCard from "../../ui/userCard";
+import QualityCard from "../../ui/qualityCard";
+import MeetingCard from "../../ui/meetingCard";
+import Comments from "../../ui/comments";
 
 const UserPage = ({ userId }) => {
-    const history = useHistory();
     const [user, setUser] = useState();
     useEffect(() => {
         api.users.getById(userId).then((data) => setUser(data));
     }, []);
-    const handleClick = () => {
-        history.push(`/users/${userId}/edit`);
-    };
     if (user) {
         return (
-            <div>
-                <h1> {user.name}</h1>
-                <h2>Профессия: {user.profession.name}</h2>
-                <Qualities qualities={user.qualities} />
-                <p>completedMeetings: {user.completedMeetings}</p>
-                <h2>Rate: {user.rate}</h2>
-                <button
-                    className="btn btn-primary btn-sm m-2"
-                    onClick={handleClick}
-                >
-                    Изменить данные пользователя
-                </button>
+            <div className="container">
+                <div className="row gutters-sm">
+                    <div className="col-md-4 mb-3">
+                        <UserCard user={user} />
+                        <QualityCard data={user.qualities} />
+                        <MeetingCard value={user.completedMeetings} />
+                    </div>
+                    <div className="col-md-8">
+                        <Comments />
+                    </div>
+                </div>
             </div>
         );
     } else {
