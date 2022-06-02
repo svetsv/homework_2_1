@@ -1,9 +1,8 @@
+import { orderBy } from "lodash";
 import React, { useEffect, useState } from "react";
 import api from "../../api";
 import { useParams } from "react-router-dom";
-import { orderBy } from "lodash";
 import CommentsList, { AddCommentForm } from "../common/comments";
-import PropTypes from "prop-types";
 
 const Comments = () => {
     const { userId } = useParams();
@@ -13,17 +12,17 @@ const Comments = () => {
             .fetchCommentsForUser(userId)
             .then((data) => setComments(data));
     }, []);
-    const sortedComments = orderBy(comments, ["created_at"], ["desc"]);
     const handleSubmit = (data) => {
         api.comments
             .add({ ...data, pageId: userId })
             .then((data) => setComments([...comments, data]));
     };
     const handleRemoveComment = (id) => {
-        api.comments
-            .remove(id)
-            .then((id) => setComments(comments.filter((it) => it._id !== id)));
+        api.comments.remove(id).then((id) => {
+            setComments(comments.filter((x) => x._id !== id));
+        });
     };
+    const sortedComments = orderBy(comments, ["created_at"], ["desc"]);
     return (
         <>
             <div className="card mb-2">
@@ -46,9 +45,6 @@ const Comments = () => {
             )}
         </>
     );
-};
-Comments.propTypes = {
-    length: PropTypes.number
 };
 
 export default Comments;

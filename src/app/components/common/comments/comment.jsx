@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import api from "../../../api";
-import displayDate from "../../../utils/formatDate";
 import PropTypes from "prop-types";
-
+import { displayDate } from "../../../utils/displayDate";
+import API from "../../../api";
 const Comment = ({
     content,
     created_at: created,
@@ -14,7 +13,7 @@ const Comment = ({
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         setIsLoading(true);
-        api.users.getById(userId).then((data) => {
+        API.users.getById(userId).then((data) => {
             setUser(data);
             setIsLoading(false);
         });
@@ -65,12 +64,13 @@ const Comment = ({
         </div>
     );
 };
-
 Comment.propTypes = {
-    _id: PropTypes.string,
     content: PropTypes.string,
+    edited_at: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     created_at: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     userId: PropTypes.string,
-    onRemove: PropTypes.func
+    onRemove: PropTypes.func,
+    _id: PropTypes.string
 };
+
 export default Comment;

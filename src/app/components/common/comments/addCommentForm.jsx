@@ -67,7 +67,6 @@ const AddCommentForm = ({ onSubmit }) => {
                     error={errors.userId}
                 />
                 <TextAreaField
-                    heigth="height: 3rem"
                     value={data.content}
                     onChange={handleChange}
                     name="content"
